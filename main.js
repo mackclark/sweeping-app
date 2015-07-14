@@ -2532,81 +2532,112 @@ streetSweeper.controller("date", ["$scope", function ($scope) {
 
     $scope.dateToday = day+", "+monthNames[monthIndex]+", "+year
     console.log($scope.dateToday);
-  
-}])
+    console.log()
+    console.log(date)
+
+    //get the day name from the day number
+    var d = new Date();
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    
+    //format date for finding the instance of the day in that month
+    var n = weekday[d.getDay()];
+    var newdate = n+", "+monthNames[monthIndex]+" "+day+", "+year;
+    
+    //format: Day, Month Date, YYYY
+    var ordinals = [0, 1, 2, 3, 4, 5];
+    var ordinalsVerbose = ["", "first", "second", "third", "fourth", "fifth"]
+    var tokens = newdate.split(/[ ,]/);
+    // tokens = ["Friday", "", "May", "10", "", "2013"];
+    console.log(ordinals[Math.ceil(tokens[3]/7)] + " " + tokens[0]);
+    
+    var instance = ordinals[Math.ceil(tokens[3]/7)];
+    
+    console.log(instance);
+    thisday = [instance, tokens[0], monthNames[monthIndex],day,year,ordinalsVerbose[instance]+" "+tokens[0]+" of "+monthNames[monthIndex]];
+    console.log(thisday);
+
+}])//END DATE \
 
 streetSweeper.controller("map", ["$scope", function ($scope) {
-    $scope.address 
-      ////////get location
-    $scope.currentLocation = navigator.geolocation.getCurrentPosition(success, error, options);
+    // $scope.address 
+    //   ////////get location
+    // $scope.currentLocation = navigator.geolocation.getCurrentPosition(success, error, options);
 
-    var options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    };
+    // var options = {
+    //   enableHighAccuracy: true,
+    //   timeout: 5000,
+    //   maximumAge: 0
+    // };
 
-    function success(pos) {
-      var crd = pos.coords;
+    // function success(pos) {
+    //   var crd = pos.coords;
 
-      console.log('Your current position is:');
-      console.log('Latitude : ' + crd.latitude);
-      console.log('Longitude: ' + crd.longitude);
-      console.log('More or less ' + crd.accuracy + ' meters.');
+    //   console.log('Your current position is:');
+    //   console.log('Latitude : ' + crd.latitude);
+    //   console.log('Longitude: ' + crd.longitude);
+    //   console.log('More or less ' + crd.accuracy + ' meters.');
 
-      // //////////translate to map
-    var geocoder = new google.maps.Geocoder();
-    var map;
-    var infowindow = new google.maps.InfoWindow();
-    var marker;
+    //   // //////////translate to map
+    // var geocoder = new google.maps.Geocoder();
+    // var map;
+    // var infowindow = new google.maps.InfoWindow();
+    // var marker;
     
-    function initialize() {
-        console.log('go')
-      map = new google.maps.Map(document.getElementById('map-canvas'), {
-            zoom: 8,
-            center: {lat: crd.latitude, lng: crd.longitude}
-          });
-     }
+    // function initialize() {
+    //     console.log('go')
+    //   map = new google.maps.Map(document.getElementById('map-canvas'), {
+    //         zoom: 8,
+    //         center: {lat: crd.latitude, lng: crd.longitude}
+    //       });
+    //  }
 
-      ///////translate to adress
-    //function codeLatLng() {
-        var lat = crd.latitude;
-        var lng = crd.longitude;
-        var latlngStr = [ lat, lng];
-        var input = lat+lng
-      // this didn't work even though it came from the google documentation.... so I worked around it
-      //var latlngStr = input.split(',', 2);
-      var latlng = new google.maps.LatLng(latlngStr[0], latlngStr[1]);
-      geocoder.geocode({'location': latlng}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-         $scope.address = results
-          if (results[1]) {
+    //   ///////translate to adress
+    // //function codeLatLng() {
+    //     var lat = crd.latitude;
+    //     var lng = crd.longitude;
+    //     var latlngStr = [ lat, lng];
+    //     var input = lat+lng
+    //   // this didn't work even though it came from the google documentation.... so I worked around it
+    //   //var latlngStr = input.split(',', 2);
+    //   var latlng = new google.maps.LatLng(latlngStr[0], latlngStr[1]);
+    //   geocoder.geocode({'location': latlng}, function(results, status) {
+    //     if (status == google.maps.GeocoderStatus.OK) {
+    //      $scope.address = results
+    //       if (results[1]) {
            
-            map.setZoom(11);
-            marker = new google.maps.Marker({
-              position: latlng,
-              map: map
-            });
-            infowindow.setContent(results[1].formatted_address);
-            infowindow.open(map, marker);
-            console.log($scope.address)
-          } else {
-            window.alert('No results found');
-          }
-        } else {
-          window.alert('Geocoder failed due to: ' + status);
-        }
-      });
-    //}
-    initialize();
+    //         map.setZoom(11);
+    //         marker = new google.maps.Marker({
+    //           position: latlng,
+    //           map: map
+    //         });
+    //         infowindow.setContent(results[1].formatted_address);
+    //         infowindow.open(map, marker);
+    //         console.log($scope.address)
+    //       } else {
+    //         window.alert('No results found');
+    //       }
+    //     } else {
+    //       window.alert('Geocoder failed due to: ' + status);
+    //     }
+    //   });
+    // //}
+    // initialize();
     
-    //codeLatLng();
+    // //codeLatLng();
 
-    };
+    // };
 
-    function error(err) {
-      console.warn('ERROR(' + err.code + '): ' + err.message);
-    };
+    // function error(err) {
+    //   console.warn('ERROR(' + err.code + '): ' + err.message);
+    // }; //END
 }])
 // need to process date to figure out what number day of the month it is
 //need to maybe process the dates in the schedule data into some more manageable format
