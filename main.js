@@ -6,8 +6,6 @@ streetSweeper.controller('sweeperSchedule', ["$scope", '$http', function ($scope
         // this callback will be called asynchronously
         // when the response is available
             $scope.schedule = data.results.collection1;
-            console.log($scope.schedule)
-            //console.log($scope.schedule.results.collection1)
       }).
         error(function(data, status, headers, config) {
         // called asynchronously if an error occurs
@@ -47,7 +45,6 @@ streetSweeper.controller("date", ["$scope", function ($scope) {
 }])
 
 streetSweeper.controller("map", ["$scope", function ($scope) {
-    $scope.address
       ////////get location
     $scope.currentLocation = navigator.geolocation.getCurrentPosition(success, error, options);
 
@@ -80,43 +77,46 @@ streetSweeper.controller("map", ["$scope", function ($scope) {
      }
 
       ///////translate to adress
-    $scope.codeLatLng = function() {
+    function codeLatLng() {
+        console.log('2')
         var lat = crd.latitude;
         var lng = crd.longitude;
         var latlngStr = [ lat, lng];
         var input = lat+lng
-      // this didn't work even though it came from the google documentation.... so I worked around it
-      //var latlngStr = input.split(',', 2);
-      var latlng = new google.maps.LatLng(latlngStr[0], latlngStr[1]);
-      geocoder.geocode({'location': latlng}, function(results, status) {
+          // this didn't work even though it came from the google documentation.... so I worked around it
+          //var latlngStr = input.split(',', 2);
+        var latlng = new google.maps.LatLng(latlngStr[0], latlngStr[1]);
+        geocoder.geocode({'location': latlng}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-          if (results[1]) {
-           
-            map.setZoom(11);
-            marker = new google.maps.Marker({
-              position: latlng,
-              map: map
+            if (results[1]) {
+               
+                map.setZoom(11);
+                marker = new google.maps.Marker({
+                  position: latlng,
+                  map: map
             });
-            infowindow.setContent(results[1].formatted_address);
-            infowindow.open(map, marker);
-           $scope.address = results
-          } else {
-            window.alert('No results found');
-          }
+                infowindow.setContent(results[1].formatted_address);
+                infowindow.open(map, marker);
+                $scope.address = results
+                console.log($scope.address)
+            } else {
+                window.alert('No results found');
+              }
         } else {
-          window.alert('Geocoder failed due to: ' + status);
-        }
+              window.alert('Geocoder failed due to: ' + status);
+            }
       });
     }
     initialize();
-    console.log('2')
-    };
+    codeLatLng()
+    $scope.youAreHere = $scope.address
+    console.log($scope.youAreHere)
+};
     function error(err) {
       console.warn('ERROR(' + err.code + '): ' + err.message);
     };
-
-   window.setTimeout(function(){console.log($scope.address)}, 5000);
-}])
+    
+   }])
 // need to process date to figure out what number day of the month it is
 //need to maybe process the dates in the schedule data into some more manageable format
 //compare the two to see if street will be swept
