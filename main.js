@@ -41,8 +41,39 @@ streetSweeper.controller("date", ["$scope", function ($scope) {
 
     $scope.dateToday = day+", "+monthNames[monthIndex]+", "+year
     console.log($scope.dateToday);
-  
-}])
+    console.log()
+    console.log(date)
+
+    //get the day name from the day number
+    var d = new Date();
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    
+    //format date for finding the instance of the day in that month
+    var n = weekday[d.getDay()];
+    var newdate = n+", "+monthNames[monthIndex]+" "+day+", "+year;
+    
+    //format: Day, Month Date, YYYY
+    var ordinals = [0, 1, 2, 3, 4, 5];
+    var ordinalsVerbose = ["", "first", "second", "third", "fourth", "fifth"]
+    var tokens = newdate.split(/[ ,]/);
+    // tokens = ["Friday", "", "May", "10", "", "2013"];
+    console.log(ordinals[Math.ceil(tokens[3]/7)] + " " + tokens[0]);
+    
+    var instance = ordinals[Math.ceil(tokens[3]/7)];
+    
+    console.log(instance);
+    thisday = [instance, tokens[0], monthNames[monthIndex],day,year,ordinalsVerbose[instance]+" "+tokens[0]+" of "+monthNames[monthIndex]];
+    console.log(thisday);
+
+}])//END DATE \
 
 streetSweeper.controller("map", ["$scope", function ($scope) {
       ////////get location
@@ -68,6 +99,7 @@ streetSweeper.controller("map", ["$scope", function ($scope) {
     var infowindow = new google.maps.InfoWindow();
     var marker;
     
+
     function initialize() {
         console.log('1')
       map = new google.maps.Map(document.getElementById('map-canvas'), {
