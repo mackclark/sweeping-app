@@ -1,6 +1,6 @@
 
 
-streetSweeper.controller("date", ["$scope", function ($scope) {
+angular.module('streetSweeper', ['geolocation']).controller("date", ["$scope", function ($scope) {
   
 var Dateobject = {
   month: 0,
