@@ -38,7 +38,7 @@
 					<h3>That street is swept on: </h3>
 					<p>{{selectedSpot.property4}}</p>
 				</div>
-				<div ng-controller="geoCtrl" ng-if="!selectedSpot">
+				<div ng-if="!selectedSpot">
 					<h3> You parked at: </h3>
 					<p>{{address[0].address_components[1].long_name}}, {{side}} side</p>
 					<h3>That street is swept on: </h3>
