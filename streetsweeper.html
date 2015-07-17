@@ -4,8 +4,10 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
 		<script src="bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
 		
+
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.css">
 		<style type="text/css" >
       		#map-canvas, .address {
@@ -28,7 +30,8 @@
 
 			<div ng-controller="date" class="columns large-4">
 				<h3>Today is:</h3> 
-				<p>{{dateToday}}</p>
+
+				<p>{{TodaysDate}}</p>
 				<div ng-if="selectedSpot">
 					<h3> You parked at: </h3>
 					<p>{{selectedSpot.property1}} {{selectedSpot.property2}}, {{selectedSpot.property3}} side</p>
@@ -60,4 +63,5 @@
 		</div>
 	</body>
 <script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="DateFunctions.js"></script>
 </html>
