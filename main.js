@@ -193,28 +193,36 @@ return Dateobject;
 } //END FUNCTION YO
 
 
-//var selector = prompt("Today or Tomorrow?");
-var selector = "today";
 
-if (selector == "tomorrow"){
+//var selector = prompt("Today or Tomorrow?");
+var DateToday;
+
+function GetToday(){
+var todays = new Date();
+var tdyDay = todays.getDay();
+var tdyDate = todays.getDate();
+var tdyMonth = todays.getMonth();
+var tdyYear = todays.getFullYear();  
+$scope.dateObjectToday = GetDateObject(tdyDay,tdyDate,tdyMonth, tdyYear);
+var DateToday = $scope.dateObjectToday;
+return DateToday
+}//END FUNCTION GetToday
+console.log(GetToday());
+
+
+function GetTomorrow(){
 var tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
-var dayss= tomorrow.getDay();
-var datess = tomorrow.getDate();
-var monthss = tomorrow.getMonth();
-var yearss = tomorrow.getFullYear();
-} else {
-var todays = new Date();
-var dayss = todays.getDay();
-var datess = todays.getDate();
-var monthss = todays.getMonth();
-var yearss = todays.getFullYear();  
+var tmrwDay= tomorrow.getDay();
+var tmrwDate = tomorrow.getDate();
+var tmrwMonth = tomorrow.getMonth();
+var tmrwYear = tomorrow.getFullYear();
+$scope.dateObjectTomorrow = GetDateObject(tmrwDay, tmrwDate, tmrwMonth, tmrwYear);
+var DateTomorrow = GetDateObject(tmrwDay, tmrwDate, tmrwMonth, tmrwYear);
+return DateTomorrow;
+}//END FUNCTION GetTomorrow
+console.log(GetTomorrow());
 
-}
-
-$scope.dateObject = GetDateObject(dayss, datess, monthss, yearss);
-//console.log(dayss,datess,monthss,yearss);
-console.log($scope.dateObject);
 
 //GetDateObject(dayss,datess,monthss,yearss);
 
