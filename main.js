@@ -1,11 +1,20 @@
 
 angular.module('streetSweeper', ['geolocation'])
 .controller('sweeperSchedule', ["$scope", '$http', 'geolocation',function ($scope, $http,geolocation) {
-	$http.get('sweeperschedule.json').
+	$http.get('somervilleschedule.json').
         success(function(data, status, headers, config) {
         // this callback will be called asynchronously
         // when the response is available
-            $scope.schedule = data.results.collection1;
+          $scope.schedule = data.results.collection1;
+          angular.forEach($scope.schedule, function(schedule){
+              schedule.concatName = schedule.property1+" "+schedule.property2;
+              schedule.sweepDate = {
+                instance1: schedule.property4.split(" and")[0],
+                instance2: schedule.property4.split(" and")[0] == "1st"?"3rd":"4th",
+                 day: schedule.property4.split(" ")[3]
+              };
+          })
+          console.log($scope.schedule);
       }).
         error(function(data, status, headers, config) {
         // called asynchronously if an error occurs
@@ -16,15 +25,20 @@ angular.module('streetSweeper', ['geolocation'])
 	$scope.streets = $scope.schedule;
 	$scope.chooseStreet = false;
   $scope.showList =function (){
-    $scope.chooseStreet = true;
+    if( $scope.chooseStreet == false){
+      $scope.chooseStreet = true;
+    }
+    else{
+      $scope.chooseStreet = false;
+    }
   }
 	 
 	 $scope.enterParkingSpot = function (street){
 	 	$scope.selectedSpot = $('[type="radio"]:checked').val();
-	 	console.log($scope.selectedSpot);
         $scope.selectedSpot = jQuery.parseJSON($scope.selectedSpot);
-        console.log($scope.selectedSpot.property1);
 	 }
+
+
 ///////here's the geolocation stuff
     var geocoder = new google.maps.Geocoder();
     var map;
@@ -72,9 +86,8 @@ angular.module('streetSweeper', ['geolocation'])
                     infowindow.setContent(results[1].formatted_address);
                     infowindow.open(map, marker);
                    $scope.address = results;
-                    console.log($scope.address)
+                    $scope.street = results[0].address_components[1].long_name;
                     var houseNumber = Number($scope.address[0].address_components[0].long_name)
-                    console.log(houseNumber%2)
                    if(houseNumber%2 != 0){
                       $scope.side = 'odd';
                     }
@@ -82,19 +95,42 @@ angular.module('streetSweeper', ['geolocation'])
                       $scope.side = 'even';
                     }
                     $scope.$apply($scope.side);
+                    $scope.$apply($scope.street);
                     $scope.$apply($scope.address);
                 } else {
                     window.alert('No results found');
+                    showList();
                   }
             } else {
                   window.alert('Geocoder failed due to: ' + status);
+                  showList();
                 }
           });
       }
+/////let's do some comparing ...this doesn't work yet i'll get back to this
 
-
-}])
-.controller("date", ["$scope", function ($scope) {
+ // $scope.locationSweepDate 
+ //  if(!$scope.chooseStreet){
+ //    angular.forEach($scope.streets, function(street){
+ //      if($scope.street == street.concatName && $scope.side == street.property3){
+ //        $scope.locationSweepDate = street.property4
+ //      }
+      
+ //    })
+ //    console.log($scope.locationSweepDate);
+ //  }
+ //  else{
+    $scope.compareDate = function(street, date){
+        if($scope.selectedSpot.sweepDate.day == $scope.dateObject.dayVerbose && $scope.selectedSpot.sweepDate.instance1 == $scope.dateObject.instance || $scope.selectedSpot.sweepDate.instance2 == $scope.dateObject.instance2 ){
+        alert("move your car");
+      }
+      else{
+        alert("you're good to go");
+      }
+    }
+  //}
+ 
+/////////////////////////////////// woooooooo date logic /////////////////////////////////////////////////
   
 var Dateobject = {
   month: 0,
@@ -136,14 +172,16 @@ monthNames[11]= "December";
 
 var newdate = (weekday[days]+", "+monthNames[months]+" "+dates+", "+years);
 var ordinals = [0,1,2,3,4,5];
-var ordinalsVerbose = ["","first","second","third","fourth","fifth"];
+var ordinalsVerbose = ["","1st","2nd","3d","4th","5th"];
 var tokens = newdate.split(/[ ,]/);
 var instance = (ordinalsVerbose[Math.ceil(tokens[3]/7)]+" "+ tokens[0]);
+var instance2 = (ordinalsVerbose[Math.ceil(tokens[3]/7)]);
 
 Dateobject.month = months;
 Dateobject.day = days;
 Dateobject.year = years;
 Dateobject.date = dates;
+Dateobject.instance = instance2;
 
 Dateobject.dayVerbose = weekday[days];
 Dateobject.monthVerbose = monthNames[months];
@@ -155,7 +193,8 @@ return Dateobject;
 } //END FUNCTION YO
 
 
-var selector = prompt("Today or Tomorrow?");
+//var selector = prompt("Today or Tomorrow?");
+var selector = "today";
 
 if (selector == "tomorrow"){
 var tomorrow = new Date();
@@ -173,11 +212,11 @@ var yearss = todays.getFullYear();
 
 }
 
-console.log(GetDateObject(dayss, datess, monthss, yearss));
-console.log(dayss,datess,monthss,yearss);
-console.log(Dateobject);
+$scope.dateObject = GetDateObject(dayss, datess, monthss, yearss);
+//console.log(dayss,datess,monthss,yearss);
+console.log($scope.dateObject);
 
-GetDateObject(dayss,datess,monthss,yearss);
+//GetDateObject(dayss,datess,monthss,yearss);
 
 $scope.TodaysDate = Dateobject.dateVerbose;
 }])

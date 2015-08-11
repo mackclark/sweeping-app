@@ -19,16 +19,7 @@
 	<body ng-app="streetSweeper">
 		<h1>DON'T GET TOWED!</h1>
 		<div ng-controller="sweeperSchedule" class="row">
-			<div class="columns large-4">
-				Find a Street: 
-				<input type="textbox" ng-model="search.property1">
-				<ul>
-					<li ng-repeat="street in schedule | filter: search.property1 | orderBy: 'property1'">{{street.property1}} {{street.property2}}, {{street.property3}}:<p> {{street.property4}}</p></li>
-				</ul>
-
-			</div>
-
-			<div ng-controller="date" class="columns large-4">
+			<div  class="columns large-6">
 				<h3>Today is:</h3> 
 
 				<p>{{TodaysDate}}</p>
@@ -40,22 +31,24 @@
 				</div>
 				<div ng-if="!selectedSpot">
 					<h3> You parked at: </h3>
-					<p>{{address[0].address_components[1].long_name}}, {{side}} side</p>
+					<p>{{street}}, {{side}} side</p>
 					<h3>That street is swept on: </h3>
+					{{}}
 					<p></p>
 				
 					<h3>Here you are</h3>
 					<div id="map-canvas"></div>
-					<div class="address">{{address[0].address_components[1].long_name}}, {{side}}</div>
+					<div class="address">{{street}}, {{side}}</div>
+
 				</div>
 			</div>
-			<div class="columns large-4">
+			<div class="columns large-6">
 					<div>Would you rather choose from a list?</div>
-					<button ng-click="showList();">yes</button>
+					<button ng-click="showList();"><span ng-if="!chooseStreet">yes</span><span ng-if="chooseStreet">no</span></button>
 					<div ng-if="chooseStreet">Where did you park?
 					<input type="textbox" ng-model="parkingSpot">
 					<div class="row" ng-repeat="street in schedule | filter: parkingSpot">
-						<input class="columns large-2" name "chooseStreet" ng-click="enterParkingSpot()" type="radio" value="{{street}}">
+						<input class="columns large-2" name "chooseStreet" ng-click="enterParkingSpot(); compareDate(dateObject)" type="radio" value="{{street}}">
 						<label class="columns large-10" for "chooseStreet" >{{street.property1}} {{street.property2}}, {{street.property3}}:<p> {{street.property4}}</p></label>
 					</div>
 					</div>
@@ -65,3 +58,6 @@
 <script type="text/javascript" src="main.js"></script>
 <script type="text/javascript" src="DateFunctions.js"></script>
 </html>
+
+
+
