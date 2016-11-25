@@ -1,0 +1,28 @@
+{
+  "name": "streetsweeping",
+  "version": "1.0.0",
+  "description": "streetsweeping reminder app",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mackclark/sweeping-app.git"
+  },
+  "author": "mackclark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mackclark/sweeping-app/issues"
+  },
+  "homepage": "https://github.com/mackclark/sweeping-app",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.2.0",
+    "gulp-uglify": "^1.5.2",
+    "jshint": "^2.9.1"
+  }
+}

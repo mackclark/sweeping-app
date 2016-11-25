@@ -5,7 +5,7 @@
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-		<script src="bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
+		<script src="dist/angularjs-geolocation.min.js"></script>
 		
 
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.css">
@@ -16,11 +16,18 @@
      		}
 		</style>
 	</head>
-	<body ng-app="streetSweeper">
-		<h1>DON'T GET TOWED!</h1>
-		<div ng-controller="sweeperSchedule" class="row">
+	<body ng-app="streetSweeper" ng-controller="sweeperSchedule">
+		<h1>DON'T GET TOWED!
+			<span ng-if="comparing == true"> | 
+				<span ng-if="moveToday == true">Move your car Today!</span>
+				<span ng-if="moveTomorrow == true">Move your car Tomorrow!</span>
+				<span ng-if="moveToday == false && moveTomorrow == false">You're good to go!</span>
+				<p>{{explanation}}</p>
+			</span>
+		</h1>
+		<div  class="row">
 			<div  class="columns large-6">
-				<h3>Today is:</h3> 
+				<h3>Today is the:</h3> 
 
 				<p>{{TodaysDate}}</p>
 				<div ng-if="selectedSpot">
@@ -29,12 +36,14 @@
 					<h3>That street is swept on: </h3>
 					<p>{{selectedSpot.property4}}</p>
 				</div>
+				<button ng-click="compareDate(dateObject)">find me!</button>
 				<div ng-if="!selectedSpot">
 					<h3> You parked at: </h3>
 					<p>{{street}}, {{side}} side</p>
 					<h3>That street is swept on: </h3>
-					{{}}
-					<p></p>
+					
+					<p>{{locationSweepDate.sweepDate}}</p>
+					
 				
 					<h3>Here you are</h3>
 					<div id="map-canvas"></div>
@@ -46,18 +55,21 @@
 					<div>Would you rather choose from a list?</div>
 					<button ng-click="showList();"><span ng-if="!chooseStreet">yes</span><span ng-if="chooseStreet">no</span></button>
 					<div ng-if="chooseStreet">Where did you park?
-					<input type="textbox" ng-model="parkingSpot">
-					<div class="row" ng-repeat="street in schedule | filter: parkingSpot">
-						<input class="columns large-2" name "chooseStreet" ng-click="enterParkingSpot(); compareDate(dateObject)" type="radio" value="{{street}}">
-						<label class="columns large-10" for "chooseStreet" >{{street.property1}} {{street.property2}}, {{street.property3}}:<p> {{street.property4}}</p></label>
-					</div>
+						<input type="textbox" ng-model="parkingSpot.concatName">
+						<div class="row" ng-repeat="street in schedule | filter: parkingSpot">
+							<input class="columns large-2" name "chooseStreet" ng-click="enterParkingSpot(); compareDate(dateObject)" type="radio" value="{{street}}">
+							<label class="columns large-10" for "chooseStreet" >{{street.concatName}}, {{street.property3}}:<p> {{street.sweepDate.sweepDate}}</p></label>
+						</div>
+					<button ng-click="loadFewer();">Back</button>
+					<button ng-click="loadMore();">Next</button>
 					</div>
 			</div>
 		</div>
 	</body>
-<script type="text/javascript" src="main.js"></script>
-<script type="text/javascript" src="DateFunctions.js"></script>
-</html>
+<script type="text/javascript" src="dist/all.js"></script>
+<!-- <script type="text/javascript" src="DateFunctions.js"></script>
+ -->
+ </html>
 
 
 
